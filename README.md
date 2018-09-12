@@ -67,7 +67,15 @@ Check "Use same selection for future launches," then press "Create New Virtual D
 Pick a Pixel 2.
 ![Select Hardware](https://i.imgur.com/s82OS9h.png)
 
-Download the API 28 image. TODO possible to preload?
+Download the API 28 image. TODO possible to preload? Click finish.
+
+Then press OK to use the device.
+
+![Select Deployment Target](https://i.imgur.com/UDrU7DN.png)
+
+Wait... Then, you should see your app!
+
+![Hello World!](https://i.imgur.com/5xvBpqg.png)
 
 # Adding a Button
 
