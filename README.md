@@ -94,6 +94,7 @@ Wait... Then, you should see your app!
 
 # Common Issues
 - If you have used Android Studio before, you may have issues with rendering a preview of your app. In that case, refer to the help [linked here](https://stackoverflow.com/a/51709049).
+- If you have issues with running the app on your device, and the error involves split APKs, you may need to [disable Instant Run](https://stackoverflow.com/a/34817880).
 
 # General Troubleshooting
 - Google is your friend! :)

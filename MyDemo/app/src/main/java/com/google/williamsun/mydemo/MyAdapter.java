@@ -1,9 +1,9 @@
+package com.google.williamsun.mydemo;
+
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.google.williamsun.mydemo.R;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private String[] mDataset;
@@ -31,7 +31,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                                                      int viewType) {
         // create a new view
         TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.my_text_view, parent, false);
+                .inflate(R.layout.pokemon_entry, parent, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }

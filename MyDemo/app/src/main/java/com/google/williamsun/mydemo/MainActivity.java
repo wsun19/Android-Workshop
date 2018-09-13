@@ -28,16 +28,17 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(mLayoutManager);
 
             // specify an adapter (see also next example)
+            String[] myDataset = new String[]{"Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard"};
             mAdapter = new MyAdapter(myDataset);
             mRecyclerView.setAdapter(mAdapter);
         }
 
         /** Called when the user taps the Send button */
         public void sendMessage(View view) {
-            Intent intent = new Intent(this, DisplayMessageActivity.class);
-            EditText editText = (EditText) findViewById(R.id.editText);
-            String message = editText.getText().toString();
-            intent.putExtra(EXTRA_MESSAGE, message);
-            startActivity(intent);
+//            Intent intent = new Intent(this, DisplayMessageActivity.class);
+////            EditText editText = (EditText) findViewById(R.id.editText);
+//            String message = editText.getText().toString();
+//            intent.putExtra(EXTRA_MESSAGE, message);
+//            startActivity(intent);
     }
 }
