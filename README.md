@@ -11,19 +11,19 @@ A workshop for learning Android by doing :)
 
 # Setup
 
-Please go through the setup before the workshop begins - it takes quite a few minutes!
+Please go through the setup before the workshop begins - it takes quite a while to download everything!
 
 1) [Download Android Studio](https://developer.android.com/studio/)
 
-2) Double click the file you downloaded to install.
+2a) If you plan on running your app on your computer, choose to have a "custom" instead of "standard" setup at this screen:
 
-3) TODO any special options to note during installation? Probably what libraries people should be using
-Stuff to install
-- Install SDK Build-Tools (27.0.3?)
-- Gradle
-## Windows
+![Install Type](https://i.imgur.com/Qxj36uN.png)
 
-## Mac
+Then, select to install all components.
+
+![SDK Components Setup](https://i.imgur.com/5yG1Lb5.png)
+
+2b) If you plan on running your app on your phone, install Android Studio with default settings, and then make sure you [enable developer options and USB debugging](https://developer.android.com/studio/debug/dev-options#enable).
 
 # Starting the Project
 
@@ -86,12 +86,16 @@ Wait... Then, you should see your app!
 # Creating a List
 
 # What next?
+- Follow more guides. Udacioty and official website (same thing?)
 - Use different APIs. For example: Rotten Tomatoes, Some Google data sets https://toolbox.google.com/datasetsearch ???,
 - Polish the UI.
 - Use Firebase/GCP.
 - TODO think of stuff that's associated with branded prizes.
 
+# Common Issues
+- If you have used Android Studio before, you may have issues with rendering a preview of your app. In that case, refer to the help [linked here](https://stackoverflow.com/a/51709049).
+
 # General Troubleshooting
 - Google is your friend! :)
-  - Stack Overflow often shows up
+  - Stack Overflow often shows up in Google results to help.
   - Us, mentors (?) at HopHacks
