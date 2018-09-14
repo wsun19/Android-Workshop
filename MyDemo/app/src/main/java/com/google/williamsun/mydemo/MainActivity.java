@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    private static final String POKEAPI_BASE_URL = "https://pokeapi.co";
+    public static final String POKEAPI_BASE_URL = "https://pokeapi.co";
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -42,12 +42,7 @@ public class MainActivity extends AppCompatActivity {
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
 
-            new PokemonDataTask().execute(POKEAPI_BASE_URL + "/api/v1/sprite/?limit=40&offset=0");
-
-            // specify an adapter (see also next example)
-            String[] myDataset = new String[]{"Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard"};
-            mAdapter = new MyAdapter(myDataset);
-            mRecyclerView.setAdapter(mAdapter);
+            new PokemonDataTask().execute(POKEAPI_BASE_URL + "/api/v1/sprite/?limit=40&offset=1");
         }
 
         /** Called when the user taps the Send button */
@@ -59,13 +54,13 @@ public class MainActivity extends AppCompatActivity {
 //            startActivity(intent);
     }
 
-    private class PokemonDataTask extends AsyncTask<String, Void, String[]> {
+    private class PokemonDataTask extends AsyncTask<String, Void, PokemonEntryData[]> {
 
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
-        protected String[] doInBackground(String... params) {
+        protected PokemonEntryData[] doInBackground(String... params) {
 
 
             HttpURLConnection connection = null;
@@ -95,12 +90,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = (JSONObject) new JSONTokener(response).nextValue();
                     JSONArray objects = jsonObject.getJSONArray("objects");
-                    String[] pokemonNames = new String[objects.length()];
+                    PokemonEntryData[] entryData = new PokemonEntryData[objects.length()];
                     for(int i = 0; i < objects.length(); i++) {
                         JSONObject entry = objects.getJSONObject(i);
-                        pokemonNames[i] = entry.getJSONObject("pokemon").getString("name");
+                        entryData[i] = new PokemonEntryData(entry.getJSONObject("pokemon").getString("name"), "/media/img/" + entry.getInt("id") + ".png");
                     }
-                    return pokemonNames;
+                    return entryData;
 
                 } catch (JSONException e) {
                     Log.e("Invalid JSON", response);
@@ -129,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onPostExecute(String[] result) {
+        protected void onPostExecute(PokemonEntryData[] result) {
             super.onPostExecute(result);
             mAdapter = new MyAdapter(result);
             mRecyclerView.setAdapter(mAdapter);

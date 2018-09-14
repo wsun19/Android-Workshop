@@ -37,6 +37,8 @@ When you're done with this tutorial, we'll continue to add a few new features!
 
 # Accessing the Internet
 
+# Making the list better
+
 # What next?
 ## For this project, try to look up and figure out how to...
 - Have the list refresh and add more Pokémon when you scroll to the bottom of the list.
