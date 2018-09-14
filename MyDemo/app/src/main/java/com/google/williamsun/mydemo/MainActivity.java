@@ -1,18 +1,33 @@
 package com.google.williamsun.mydemo;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.google.williamsun.mydemo.MESSAGE";
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+
+    private static final String POKEAPI_BASE_URL = "https://pokeapi.co";
     @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -27,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
             mLayoutManager = new LinearLayoutManager(this);
             mRecyclerView.setLayoutManager(mLayoutManager);
 
+            new PokemonDataTask().execute(POKEAPI_BASE_URL + "/api/v1/sprite/?limit=40&offset=0");
+
             // specify an adapter (see also next example)
             String[] myDataset = new String[]{"Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard", "Bulbasaur", "Ivysaur", "Venasaur", "Charizard"};
             mAdapter = new MyAdapter(myDataset);
@@ -40,5 +57,82 @@ public class MainActivity extends AppCompatActivity {
 //            String message = editText.getText().toString();
 //            intent.putExtra(EXTRA_MESSAGE, message);
 //            startActivity(intent);
+    }
+
+    private class PokemonDataTask extends AsyncTask<String, Void, String[]> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        protected String[] doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                }
+
+                String response = buffer.toString();
+
+                try {
+                    JSONObject jsonObject = (JSONObject) new JSONTokener(response).nextValue();
+                    JSONArray objects = jsonObject.getJSONArray("objects");
+                    String[] pokemonNames = new String[objects.length()];
+                    for(int i = 0; i < objects.length(); i++) {
+                        JSONObject entry = objects.getJSONObject(i);
+                        pokemonNames[i] = entry.getJSONObject("pokemon").getString("name");
+                    }
+                    return pokemonNames;
+
+                } catch (JSONException e) {
+                    Log.e("Invalid JSON", response);
+                }
+
+                return null;
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+            super.onPostExecute(result);
+            mAdapter = new MyAdapter(result);
+            mRecyclerView.setAdapter(mAdapter);
+        }
     }
 }
