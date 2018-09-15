@@ -138,7 +138,9 @@ Under res/layout, we can also make a pokemon_entry.xml file
     xmlns:android="http://schemas.android.com/apk/res/android" />
 ```
 
-We should also comment out or delete the sendMessage method for now - it's not going to be used for the rest of this workshop, though it's related to concepts you may want to keep working on. Similarly, we should comment out the contents of DisplayMessageActivity.java
+We should also comment out or delete the sendMessage method for now - it's not going to be used for the rest of this workshop, though it's related to concepts you may want to keep working on. 
+
+Similarly, we should comment out the contents of DisplayMessageActivity.java
 
 Right now, if you run the app, you should see a short list of Pokémon names - you can add extra data to confirm that it scrolls!
 
