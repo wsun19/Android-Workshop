@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     PokemonEntryData[] entryData = new PokemonEntryData[objects.length()];
                     for(int i = 0; i < objects.length(); i++) {
                         JSONObject entry = objects.getJSONObject(i);
-                        entryData[i] = new PokemonEntryData(entry.getJSONObject("pokemon").getString("name"), "/media/img/" + entry.getInt("id") + ".png");
+                        entryData[i] = new PokemonEntryData(entry.getJSONObject("pokemon").getString("name"), entry.getString("image"));
                     }
                     return entryData;
 

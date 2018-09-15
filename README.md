@@ -110,7 +110,7 @@ Now, we will change the beginning of the MainActivity file to this. This creates
 private RecyclerView mRecyclerView;
 private RecyclerView.Adapter mAdapter;
 private RecyclerView.LayoutManager mLayoutManager;
-@Override	    @Override
+@Override	 
     protected void onCreate(Bundle savedInstanceState) {	 
         super.onCreate(savedInstanceState);	      
         setContentView(R.layout.activity_main);	 
@@ -143,9 +143,13 @@ We should also comment out or delete the sendMessage method for now - it's not g
 Right now, if you run the app, you should see a short list of Pokémon names - you can add extra data to confirm that it scrolls!
 
 # Accessing the Internet
-It's kind of boring to have an app with only hardcoded data - let's make it more dynamic! To demonstrate how to do this, we will
+It's kind of boring to have an app with only hardcoded data - let's make it more dynamic! To demonstrate how to do this, we will use a Pokemon API.
 
-TODO explain the API
+To check out the API, you can look at the main link [https://pokeapi.co/api/v1/sprite/?limit=40&offset=1](https://pokeapi.co/api/v1/sprite/?limit=40&offset=1). It should look like a mess, so you can use this [JSON formatting website](https://jsonformatter.curiousconcept.com/) to have a better idea of what's going on.
+
+![Formatted JSON](https://i.imgur.com/xIurtSa.png)
+
+So, we can see that the rough structure is that there is an array of objects that represent information about separate Pokémon, including their name, Pokédex ID, and URL to their sprite image.
 
 To allow the app to access the Internet, we will add the Internet permission to our AndroidManifest.xml file by adding this line right after the "manifest" line:
 
@@ -280,7 +284,7 @@ PokemonEntryData[] entryData = new PokemonEntryData[objects.length()];
 for(int i = 0; i < objects.length(); i++) {	          
     JSONObject entry = objects.getJSONObject(i);	                      
     pokemonNames[i] = entry.getJSONObject("pokemon").getString("name");
-    PokemonEntryData(entry.getJSONObject("pokemon").getString("name"), "/media/img/" + entry.getInt("id") + ".png");
+                        entryData[i] = new PokemonEntryData(entry.getJSONObject("pokemon").getString("name"), entry.getString("image"));
 }
 return entryData;
 ```
@@ -321,17 +325,16 @@ Note, the second line handles all of the logic for downloading and resizing the 
 - Make it so that when you click on an entry in the list, you open up a new Activity with more information about the Pokémon - remember that we did something similar in the basic tutorial at the beginning, with the textview and button.
 
 # In General
-- Follow more guides. Udacity and official website (same thing?)
-- Use different APIs. For example, [The OpenWeatherMap API](https://openweathermap.org/api).
-- TODO Material Design UI
-- Use Firebase/GCP.
-- TODO think of stuff that's associated with branded prizes.
+- Follow more guides. There are [two more](https://developer.android.com/courses/) suggested on the Android Developers website, and I personally liked the Udacity courses/track.
+- Use different APIs for your app. For example, [The OpenWeatherMap API](https://openweathermap.org/api).
+- Check out some resources for [developing Material Design](https://material.io/develop/) to make your app look beautiful in the standard way.
+- Check out [Firebase](https://firebase.google.com/) and [Google Cloud](https://cloud.google.com/) for more tools to make your app better, like messaging.
 
 # Common Issues
 - If you have used Android Studio before, you may have issues with rendering a preview of your app. In that case, refer to the help [linked here](https://stackoverflow.com/a/51709049).
-- If you have issues with running the app on your device, and the error involves split APKs, you may need to [disable Instant Run](https://stackoverflow.com/a/34817880).
+- If you have issues with running the app on your device, you may need to [disable Instant Run](https://stackoverflow.com/a/34817880).
 
 # General Troubleshooting
 - Google is your friend! :)
   - Stack Overflow often shows up in Google results to help.
-  - Us, mentors (?) at HopHacks
+- I'm glad to try to help during the entire weekend! You can always reach me as william@ on Slack.
