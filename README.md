@@ -37,7 +37,7 @@ When you're done with this tutorial, we'll continue to add a few new features!
 
 Now, we're going to base this app around a list of content.
 
-In your build.gradle (Module: app) file, add this line to your dependencies section
+In the project view, under Gradle Scripts, in your build.gradle (Module: app) file, add this line to your dependencies section. Then, sync if necessary.
 ```
 implementation 'com.android.support:recyclerview-v7:28.0.0-alpha1'
 ```
@@ -103,7 +103,7 @@ import android.widget.TextView;
     }
 }
 ```
-
+(You may need to insert your package name, as per the error).
 
 Now, we will change the beginning of the MainActivity file to this. This creates a few variables needed for our RecyclerView, and also sets up some boilerplate code for using it.
 ```
@@ -138,7 +138,7 @@ Under res/layout, we can also make a pokemon_entry.xml file
     xmlns:android="http://schemas.android.com/apk/res/android" />
 ```
 
-We should also comment out or delete the sendMessage method for now - it's not going to be used for the rest of this workshop, though it's related to concepts you may want to keep working on.
+We should also comment out or delete the sendMessage method for now - it's not going to be used for the rest of this workshop, though it's related to concepts you may want to keep working on. Similarly, we should comment out the contents of DisplayMessageActivity.java
 
 Right now, if you run the app, you should see a short list of Pokémon names - you can add extra data to confirm that it scrolls!
 
@@ -170,7 +170,6 @@ new PokemonDataTask().execute(POKEAPI_BASE_URL + "/api/v1/sprite/?limit=40&offse
 Add the AsyncTask to below the onCreate method.
 
 ```
-
 private class PokemonDataTask extends AsyncTask<String, Void, String[]> {
      protected void onPreExecute() {
         super.onPreExecute();
@@ -192,14 +191,7 @@ private class PokemonDataTask extends AsyncTask<String, Void, String[]> {
              }
              String response = buffer.toString();
              try {
-                JSONObject jsonObject = (JSONObject) new JSONTokener(response).nextValue();
-                JSONArray objects = jsonObject.getJSONArray("objects");
-                String[] pokemonNames = new String[objects.length()];
-                for(int i = 0; i < objects.length(); i++) {
-                    JSONObject entry = objects.getJSONObject(i);
-                    pokemonNames[i] = entry.getJSONObject("pokemon").getString("name");
-                }
-                return pokemonNames;
+               // Insert code block 1
              } catch (JSONException e) {
                 Log.e("Invalid JSON", response);
             }
@@ -225,18 +217,35 @@ private class PokemonDataTask extends AsyncTask<String, Void, String[]> {
      @Override
     protected void onPostExecute(String[] result) {
         super.onPostExecute(result);
-        mAdapter = new MyAdapter(result);
-        mRecyclerView.setAdapter(mAdapter);
+        //Insert code block 2
     }
 }
+```
 
+Here's what to insert into code block one. It's useful to have the formatted JSON example from above up while you look at this code, to see how we're getting the data we need.
+```
+JSONObject jsonObject = (JSONObject) new JSONTokener(response).nextValue();
+JSONArray objects = jsonObject.getJSONArray("objects");
+String[] pokemonNames = new String[objects.length()];
+
+for(int i = 0; i < objects.length(); i++) {
+   JSONObject entry = objects.getJSONObject(i);
+   pokemonNames[i] = entry.getJSONObject("pokemon").getString("name");
+}
+return pokemonNames;
+```
+
+Here's what to insert into code block two. Notice that this is exactly the same as the code in the onCreate method.
+```
+mAdapter = new MyAdapter(result);
+mRecyclerView.setAdapter(mAdapter);
 ```
 
 # Making the list better
 
 Now, let's make it a little more interesting - to show an example of how you can make an item in a list more complicated, we'll also add a small image of the Pokémon next to the name.
 
-As before, add this to your build.gradle (Module: app) file
+As before, add this to your build.gradle (Module: app) file. This allows us to use a library that makes it easy to view images in our app.
 
 ```
 implementation 'com.squareup.picasso:picasso:2.71828'
@@ -244,25 +253,28 @@ implementation 'com.squareup.picasso:picasso:2.71828'
 
 Since each list item will now have an image in addition to text, we'll change the pokemon_entry.xml file to:
 ```
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text=""	 
-    android:textSize="32dp"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    android:text=""
+    android:textSize="32dp">
+
+    <ImageView
         android:id="@+id/entry_sprite"
         android:layout_width="wrap_content"
         android:layout_height="match_parent" />
-     <TextView
+
+    <TextView
         android:id="@+id/entry_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="28sp"/>
- </LinearLayout>
+        android:textSize="28sp" />
+</LinearLayout>
 ```
 
 Remember that the mAdapter's current data is just a String array - that was all right when we just needed to have names in the list, but we now need two pieces of data - the name of the Pokémon, and the URL of the image of the Pokémon. So, let's make a new Java file PokemonEntryData.java with a relatively simple Java data object.
 ```
- public class PokemonEntryData {
+public class PokemonEntryData {
     public String name;
     public String spriteUrl;
     public PokemonEntryData(String name, String spriteUrl) {
@@ -273,6 +285,13 @@ Remember that the mAdapter's current data is just a String array - that was all 
 ```
 
 Now, in the AsyncTask, we should change every instance of "String[]" to "PokemonEntryData[]", since the adapter needs data in this format now.
+
+We should also delete this block of code in the onCreate
+```
+String[] myDataset = new String[]{"Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur", "Bulbasaur", "Ivysaur", "Venasaur"};
+mAdapter = new MyAdapter(myDataset);
+mRecyclerView.setAdapter(mAdapter);
+```
 
 Also, in the try block of the AsyncTask, we need to update the logic to also pass along the sprite url
 
@@ -289,7 +308,9 @@ for(int i = 0; i < objects.length(); i++) {
 return entryData;
 ```
 
-In MyAdapter.java, we should also change every instance of "String[]" to "PokemonEntryData[]". Then, the contents of the MyViewHolder class should change to:
+In MyAdapter.java, we should also change every instance of "String[]" to "PokemonEntryData[]".
+
+Then, the contents of the MyViewHolder class should change to:
 
 ```
 public TextView mTextView;
